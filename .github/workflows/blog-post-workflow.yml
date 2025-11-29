@@ -9,7 +9,7 @@ jobs:
     name: Update this repo's README with latest blog posts
     runs-on: ubuntu-latest
     permissions:
-      contents: write # এই লাইনটিই পারমিশন সমস্যার সমাধান করবে
+      contents: write
     steps:
       - uses: actions/checkout@v3
       - uses: gautamkrishnar/blog-post-workflow@master
