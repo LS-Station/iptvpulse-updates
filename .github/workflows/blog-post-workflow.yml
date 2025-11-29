@@ -1,0 +1,16 @@
+name: Latest blog post workflow
+on:
+  schedule: # Run workflow automatically
+    - cron: '0 * * * *' # প্রতি ঘণ্টায় একবার চেক করবে
+  workflow_dispatch: # Manually run the workflow
+
+jobs:
+  update-readme-with-blog:
+    name: Update this repo's README with latest blog posts
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: gautamkrishnar/blog-post-workflow@master
+        with:
+          feed_list: "https://iptvpulse.top/feeds/posts/default?alt=rss"
+          max_post_count: "5"
