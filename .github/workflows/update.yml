@@ -1,0 +1,33 @@
+name: Update README with Images
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 */6 * * *'
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Update README
+        run: |
+          curl -s "https://iptvpulse.top/feeds/posts/default?alt=rss&max-results=20" > rss.xml
+          awk 'BEGIN{print"## Latest 20 Playlists\n"} 
+          /<item>/{p=1} 
+          p&&/<title>/{gsub(/<!\[CDATA\[|\]\]>/,"",$0); gsub(/<[^>]*>/,""); title=$0} 
+          p&&/<link>/{link=$0; gsub(/<[^>]*>/,"",link)} 
+          p&&/<description>/{desc=$0; if(match(desc,/src=\"(https[^\"]*bp\.blogspot\.com[^\"]*\.jpg)/,a)) img=a[1]; else img="https://via.placeholder.com/480x270/0d1117/58a6ff?text=No+Image"} 
+          p&&/<\/item>/{print"[!["title"]("img")]("link")\n**["title"]("link")**\n---"; p=0}' rss.xml > new.md
+          sed -i '/## Latest 20 Playlists/,/---/d' README.md 2>/dev/null || true
+          cat new.md >> README.md
+          rm rss.xml new.md
+
+      - name: Commit
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add README.md
+          git commit -m "Update latest 20 playlists with images" || exit 0
+          git push
