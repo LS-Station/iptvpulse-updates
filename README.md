@@ -10,6 +10,8 @@
 ## Latest 20 Playlists (Auto-updated)
 
 <!-- START_OF_PLAYLISTS -->
+## Latest 20 Playlists (Auto-updated)
+
 <!-- END_OF_PLAYLISTS -->
 
 Made with ❤️ using GitHub Actions
