@@ -1,17 +1,14 @@
 # IPTV Pulse – Free M3U Playlists 2025
 
 ![Live Site](https://img.shields.io/website?url=https%3A%2F%2Ftomal-cse.github.io%2FIPTV-Pulse%2F&label=Live%20Site&color=58a6ff)
-![Auto Update](https://github.com/tomal-cse/IPTV-Pulse/actions/workflows/update.yml/badge.svg)
 
-**Daily fresh IPTV M3U playlists** • World • Sports • 4K • Movies
+**Daily fresh IPTV M3U playlists** • World • Sports • 4K • Adult • Movies
 
 **Live Site:** https://tomal-cse.github.io/IPTV-Pulse/
 
-## Latest 20 Playlists (Auto-updated)
+## Latest 20 Latest Playlists (Auto-updated every 4 hours)
 
-<!-- START_OF_PLAYLISTS -->
-## Latest 20 Playlists (Auto-updated)
-
-<!-- END_OF_PLAYLISTS -->
+<!--PLAYLISTS_START-->
+<!--PLAYLISTS_END-->
 
 Made with ❤️ using GitHub Actions
