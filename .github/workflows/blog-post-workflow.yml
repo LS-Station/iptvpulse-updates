@@ -1,0 +1,29 @@
+name: Latest Blog Post Workflow
+
+on:
+  schedule:
+    - cron: '0 0 * * *'  # Daily at midnight UTC
+  workflow_dispatch:  # Manual trigger
+
+jobs:
+  update-readme:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write  # Required for committing to README
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}  # Use token for push
+
+      - name: Fetch latest posts and update README
+        uses: gautamkrishnar/blog-post-workflow@v1
+        with:
+          feed_list: "https://iptvpulse.top/feeds/posts/default?alt=rss"
+          max_post_count: "20"  # Latest 20 posts
+          comment_tag_name: "BLOG-POST-LIST"  # Custom tag for README
+          commit_message: "Update README with latest 20 IPTV playlists"
+          committer_username: "github-actions[bot]"
+          committer_email: "github-actions[bot]@users.noreply.github.com"
+          cname: "IPTV Pulse"  # Optional: site name
