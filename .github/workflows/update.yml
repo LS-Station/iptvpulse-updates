@@ -8,18 +8,23 @@ on:
 jobs:
   update:
     runs-on: ubuntu-latest
+
     steps:
       - uses: actions/checkout@v4
 
-      - name: Update README
-        run: |
-          curl -L -s "https://raw.githubusercontent.com/anisurrahman072/Blogger-JSON-to-README/main/blogger.py" > blogger.py
-          python3 blogger.py "https://iptvpulse.top" 20
-          
-      - name: Commit & Push
+      - name: Install Python dependencies
+        run: sudo apt-get install -y python3-requests
+
+      - name: Download Script
+        run: curl -L -s "https://raw.githubusercontent.com/anisurrahman072/Blogger-JSON-to-README/main/blogger.py" -o blogger.py
+
+      - name: Generate README
+        run: python3 blogger.py "https://iptvpulse.top" 20
+
+      - name: Commit & Push changes
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add README.md
-          git commit -m "Update latest 20 playlists with images" || exit 0
+          git commit -m "Auto-update latest 20 playlists with images" || exit 0
           git push
