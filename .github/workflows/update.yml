@@ -1,4 +1,4 @@
-name: Update README with Images
+name: Update Playlists with Images
 
 on:
   workflow_dispatch:
@@ -6,41 +6,35 @@ on:
     - cron: '0 */4 * * *'
 
 jobs:
-  update:
+  run:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
 
-      - name: Update Latest Playlists with Images
+      - name: Generate posts with images
         run: |
           curl -s "https://iptvpulse.top/feeds/posts/default?alt=rss&max-results=20" > rss.xml
 
-          NEW_CONTENT="## Latest 20 Playlists (Auto-updated)\n\n"
-          while read -r line; do
-            if [[ $line == "<item>" ]]; then
-              title=""; link=""; img=""
-            elif [[ $line == *"<title>"* ]]; then
-              title=$(echo "$line" | sed -e 's/<title>/d' -e 's/<\/title>//g' | sed 's/<!\[CDATA\[//g; s/\]\]>//g')
-            elif [[ $line == *"<link>"* ]]; then
-              link=$(echo "$line" | sed 's/<link>//; s/<\/link>//')
-            elif [[ $line == *"<description>"* || $line == *"<content:encoded>"* ]]; then
-              if [[ $line =~ src=\[](https://[0-9]+\.bp\.blogspot\.com[^\"]*\.jpg) ]]; then
-                img="${BASH_REMATCH[1]}"
-                img=${img/s72-c/s400}
-              fi
-            elif [[ $line == "</item>" && -n "$title" && -n "$link" ]]; then
-              thumb=${img:-"https://via.placeholder.com/600x340/0d1117/58a6ff?text=No+Image"}
-              NEW_CONTENT+="[![]($thumb)]($link)\n**[$title]($link)**\n\n---\n\n"
-            fi
+          CONTENT="## 20 Latest Playlists (Auto-updated every 4 hours)\n\n"
+          while IFS= read -r line; do
+            [[ $line =~ \<item\> ]] && { title=""; link=""; img=""; }
+            [[ $line =~ \<title\>\<\!\[CDATA\[(.*)\]\]\>\<\/title\> ]] && title="${BASH_REMATCH[1]}"
+            [[ $line =~ \<link\>(.*)\<\/link\> ]] && link="${BASH_REMATCH[1]}"
+            [[ $line =~ src=\[](https://[0-9]+\.bp\.blogspot\.com[^\"]*\.jpg) ]] && img="${BASH_REMATCH[1]/s72-c/s400}"
+            [[ $line =~ \<\/item\> ]] && [[ -n "$title" ]] && {
+              thumb="${img:-https://via.placeholder.com/600x340/0d1117/58a6ff?text=No+Image}"
+              CONTENT+="[![]($thumb)]($link)\n\n**[$title]($link)**\n\n---\n\n"
+            }
           done < rss.xml
 
-          # Replace block between markers
-          sed -i '/<!-- START_OF_PLAYLISTS/,/ END_OF_PLAYLISTS/c\<!-- START_OF_PLAYLISTS -->\n'"$NEW_CONTENT"'<!-- END_OF_PLAYLISTS -->' README.md
+          # Replace everything between markers
+          sed -i '/<!--PLAYLISTS_START-->/,/<!--PLAYLISTS_END-->/c\<!--PLAYLISTS_START-->\n'"$CONTENT"'<!--PLAYLISTS_END-->' README.md
 
       - name: Commit & Push
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add README.md
-          git commit -m "Update latest 20 playlists with images" || exit 0
+          git diff --quiet && echo "No changes" && exit 0
+          git commit -m "Update 20 latest playlists with images"
           git push
