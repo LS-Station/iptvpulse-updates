@@ -1,157 +1,64 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>IPTV Pulse - Free M3U Playlists 2025</title>
-  <meta name="description" content="Daily updated free IPTV M3U playlists - World, Sports, Movies, 4K, Adult channels and more. Updated every hour!">
-  
-  <!-- Open Graph for nice preview when shared -->
-  <meta property="og:title" content="IPTV Pulse - Free M3U 2025">
-  <meta property="og:description" content="Daily fresh IPTV playlists - 100% free & working">
-  <meta property="og:image" content="https://iptvpulse.top/favicon.ico">
-  <meta property="og:url" content="https://iptvpulse.top">
-  
-  <link rel="icon" href="https://iptvpulse.top/favicon.ico">
-  
   <style>
-    :root {
-      --bg: #0d1117;
-      --card: #161b22;
-      --text: #c9d1d9;
-      --accent: #58a6ff;
-      --border: #30363d;
-    }
-    
-    * { margin:0; padding:0; box-sizing:border-box; }
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      line-height: 1.6;
-      padding: 20px;
-    }
-    .container {
-      max-width: 900px;
-      margin: 0 auto;
-    }
-    header {
-      text-align:center;
-      padding: 40px 0 60px;
-    }
-    h1 {
-      font-size: 2.8rem;
-      background: linear-gradient(90deg, #58a6ff, #1f6feb);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      margin-bottom: 10px;
-    }
-    .subtitle {
-      font-size: 1.2rem;
-      color: #8b949e;
-      margin-top: 10px;
-    }
-    .posts {
-      display: grid;
-      gap: 18px;
-    }
-    .post {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 20px;
-      transition: all 0.3s ease;
-    }
-    .post:hover {
-      transform: translateY(-5px);
-      border-color: var(--accent);
-      box-shadow: 0 10px 30px rgba(88,166,255,0.15);
-    }
-    .post-title {
-      font-size: 1.25rem;
-      margin-bottom: 8px;
-    }
-    .post-title a {
-      color: var(--accent);
-      text-decoration: none;
-    }
-    .post-title a:hover {
-      text-decoration: underline;
-    }
-    .post-date {
-      color: #8b949e;
-      font-size: 0.9rem;
-    }
-    .footer {
-      text-align:center;
-      padding: 60px 0 30px;
-      color: #8b949e;
-      font-size: 0.9rem;
-    }
-    @media (max-width: 600px) {
-      h1 { font-size: 2.2rem; }
-      .post { padding: 16px; }
-    }
+    body {margin:0;font-family:system-ui;background:#0d1117;color:#c9d1d9;padding:20px;line-height:1.6}
+    .container {max-width:1100px;margin:0 auto}
+    header {text-align:center;padding:50px 0}
+    h1 {font-size:3rem;background:linear-gradient(90deg,#58a6ff,#1f6feb);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+    .posts {display:grid;gap:20px}
+    .post {background:#161b22;border:1px solid #30363d;border-radius:12px;overflow:hidden;display:flex;gap:20px;padding:18px;transition:.3s}
+    .post:hover {transform:translateY(-8px);border-color:#58a6ff;box-shadow:0 15px 40px rgba(88,166,255,.2)}
+    .thumb {width:220px;height:140px;object-fit:cover;border-radius:10px;flex-shrink:0;background:#000}
+    .info {flex:1;display:flex;flex-direction:column;justify-content:center}
+    .title a {color:#58a6ff;text-decoration:none;font-size:1.35rem;font-weight:600}
+    .title a:hover {text-decoration:underline}
+    .date {color:#8b949e;margin-top:8px;font-size:.95rem}
+    .footer {text-align:center;padding:70px 0 30px;color:#8b949e}
+    @media(max-width:768px){.post{flex-direction:column}.thumb{width:100%;height:200px}}
   </style>
 </head>
-
 <body>
   <div class="container">
     <header>
       <h1>IPTV Pulse</h1>
-      <p class="subtitle">Free Daily Updated IPTV M3U Playlists 2025 • World • Sports • 4K • Movies</p>
+      <p style="font-size:1.3rem;color:#8b949e">Free Daily Updated IPTV M3U Playlists • 2025</p>
     </header>
-
-    <div class="posts" id="blog-posts">
-      <!-- Latest 20 posts will be injected here automatically -->
-      <!-- BLOG-POST-LIST:START -->
-      <!-- BLOG-POST-LIST:END -->
-    </div>
-
+    <div class="posts" id="posts">Loading latest playlists...</div>
     <div class="footer">
-      © 2025 IPTV Pulse • All playlists are free & updated every day<br>
+      © 2025 IPTV Pulse • Updated every day<br>
       <a href="https://iptvpulse.top" style="color:#58a6ff">Visit Main Blog</a>
     </div>
   </div>
 
-  <!-- This script makes the comment block above work exactly like in README -->
   <script>
-    document.addEventListener("DOMContentLoaded", function() {
-      const start = "<!-- BLOG-POST-LIST:START -->";
-      const end = "<!-- BLOG-POST-LIST:END -->";
-      const content = document.body.innerHTML;
-      
-      if (content.includes(start) && content.includes(end)) {
-        const startIdx = content.indexOf(start) + start.length;
-        const endIdx = content.indexOf(end);
-        const raw = content.substring(startIdx, endIdx);
-        
-        // Convert the raw markdown list to nice cards
-        const lines = raw.trim().split('\n');
-        let html = '';
-        
-        lines.forEach(line => {
-          if (line.trim().startsWith('-')) {
-            const match = line.match(/\[(.+?)\]\((.+?<!\\)\)/);
-            const dateMatch = line.match(/\((.*?)\)/);
-            if (match) {
-              const title = match[1];
-              const url = match[2];
-              const date = dateMatch ? dateMatch[1] : '';
-              html += `
-                <div class="post">
-                  <div class="post-title">
-                    <a href="${url}" target="_blank" rel="noopener">${title}</a>
-                  </div>
-                  ${date ? `<div class="post-date">${date}</div>` : ''}
-                </div>`;
-            }
-          }
+    fetch('https://iptvpulse.top/feeds/posts/default?alt=rss&max-results=20')
+      .then(r => r.text())
+      .then(str => {
+        const parser = new DOMParser();
+        const xml = parser.parseFromString(str, "text/xml");
+        const items = xml.querySelectorAll("item");
+        let html = "";
+        items.forEach(item => {
+          const title = item.querySelector("title").textContent;
+          const link = item.querySelector("link").textContent;
+          const date = new Date(item.querySelector("pubDate").textContent).toLocaleDateString('en-GB');
+          const desc = item.querySelector("description").textContent;
+          const imgMatch = desc.match(/src="(https:\/\/[1-4]\.bp\.blogspot\.com[^"]+\.jpg)/);
+          const thumb = imgMatch ? imgMatch[1].replace(/s72-c/, "s400") : "https://via.placeholder.com/220x140/161b22/58a6ff?text=No+Image";
+          html += `<div class="post">
+            <img src="${thumb}" class="thumb" loading="lazy">
+            <div class="info">
+              <div class="title"><a href="${link}" target="_blank">${title}</a></div>
+              <date>${date}</date>
+            </div>
+          </div>`;
         });
-        
-        document.getElementById('blog-posts').innerHTML = html || '<p style="text-align:center;color:#8b949e">No posts found yet. Check back in a few minutes!</p>';
-      }
-    });
+        document.getElementById("posts").innerHTML = html;
+      });
   </script>
 </body>
 </html>
