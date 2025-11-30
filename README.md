@@ -3,4 +3,4 @@
 <!-- BLOG-POST-LIST:START -->
 <!-- BLOG-POST-LIST:END -->
 
-Updated automatically every day!
+Updated daily!
