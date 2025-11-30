@@ -1,9 +1,9 @@
-name: Update Playlists with Images
+name: Update README with Images
 
 on:
   workflow_dispatch:
   schedule:
-    - cron: '0 */3 * * *'
+    - cron: '0 */6 * * *'
 
 jobs:
   update:
@@ -11,50 +11,15 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Update README with 20 latest posts + images
+      - name: Update README
         run: |
-          curl -s "https://iptvpulse.top/feeds/posts/default?alt=rss&max-results=20" > rss.xml
-
-          { 
-            echo "## Latest 20 Playlists (Auto-updated)"
-            echo ""
-            python3 -c "
-import xml.etree.ElementTree as ET, re
-tree = ET.parse('rss.xml')
-root = tree.getroot()
-for item in root.findall('./channel/item')[:20]:
-    title = item.find('title').text or 'No title'
-    link = item.find('link').text or '#'
-    desc = item.find('.//{http://purl.org/rss/1.0/modules/content/}encoded')
-    img = ''
-    if desc is not None:
-        m = re.search(r'src=\[](https://[1-4]\.bp\.blogspot\.com[^\"]+\\.jpg)', desc.text or '')
-        if m:
-            img = m.group(1).replace('s72-c', 's400').replace('s72-w', 's400')
-    thumb = img or 'https://via.placeholder.com/600x340/0d1117/58a6ff?text=No+Image'
-    print(f'[![]({thumb})]({link})')
-    print(f'')
-    print(f'**[{title}]({link})**')
-    print(f'')
-    print('---')
-    print('')
-"
-          } > new_posts.md
-
-          # Replace content between markers
-          sed -i '/<!--PLAYLISTS_START-->/,/<!--PLAYLISTS_END-->/{
-            /<!--PLAYLISTS_START-->/c\<!--PLAYLISTS_START-->
-            /<!--PLAYLISTS_END-->/c\<!--PLAYLISTS_END-->
-            d
-          }' README.md
-
-          # new content insert
-          sed -i '/<!--PLAYLISTS_START-->/ r new_posts.md' README.md
-
+          curl -L -s "https://raw.githubusercontent.com/anisurrahman072/Blogger-JSON-to-README/main/blogger.py" > blogger.py
+          python3 blogger.py "https://iptvpulse.top" 20
+          
       - name: Commit & Push
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add README.md
-          git commit -m "Updated latest 20 playlists with images" || exit 0
+          git commit -m "Update latest 20 playlists with images" || exit 0
           git push
